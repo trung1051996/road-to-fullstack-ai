@@ -8,10 +8,10 @@ class StudentService:
     def __init__(self, data_file: Path = DATA_FILE):
         self.data_file = data_file
     def load_students(self):
-        if not DATA_FILE.exists():
-            with DATA_FILE.open("w", encoding="utf-8") as file:
+        if not self.data_file.exists():
+            with self.data_file.open("w", encoding="utf-8") as file:
                 json.dump([], file, indent=4)
-        with open(DATA_FILE, "r", encoding="utf-8") as file:
+        with open(self.data_file, "r", encoding="utf-8") as file:
             try:
                 data = json.load(file)
                 return [
@@ -22,7 +22,7 @@ class StudentService:
                 return []
 
     def save_students(self, students):
-        with open(DATA_FILE, "w", encoding="utf-8") as file:
+        with open(self.data_file, "w", encoding="utf-8") as file:
             json.dump(
                 [
                     asdict(student)
