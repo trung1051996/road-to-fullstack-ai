@@ -1,28 +1,16 @@
 import json
-from services.student_service import load_students, save_students, add_student, update_student,remove_student, find_student
+from services.student_service import StudentService
+from models.student import Student
 
-students = load_students()
+student_service = StudentService()
+# print(student_service.load_students())
 
-save_students([
-    {
-        "name": "Nam",
-        "age": 15,
-        "score": 5
-    },
-    {
-        "name": "Yen",
-        "age": 15,
-        "score": 6
-    }
-])
+# new_student = Student("Yenzz 1", 20, 8)
 
+# student_service.save_students([new_student])
 
-add_student({
-        "name": "Yen",
-        "age": 15,
-        "score": 6
-    })
+# student_service.add_student(new_student)
 
-update_student("Yen", "Evan")
-remove_student("Yen")
-print(find_student("Yen"))
+# student_service.update_student("Yenzz", "Evan")
+# student_service.remove_student("Yen")
+print(student_service.find_student("Hung"))

@@ -5,18 +5,18 @@
         "score": 5
     },
     {
-        "name": "Yen",
-        "age": 15,
-        "score": 6
-    },
-    {
         "name": "Hung",
         "age": 20,
         "score": 10
     },
     {
-        "name": "Yen",
-        "age": 15,
-        "score": 6
+        "name": "Evan",
+        "age": 20,
+        "score": 8
+    },
+    {
+        "name": "Yenzz 1",
+        "age": 20,
+        "score": 8
     }
 ]
