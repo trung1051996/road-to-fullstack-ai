@@ -1,2 +1,2 @@
 def square(n):
-    return round(n)
+    return pow(n,2)

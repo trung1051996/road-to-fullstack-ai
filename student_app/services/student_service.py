@@ -5,6 +5,8 @@ from dataclasses import asdict
 DATA_FILE = Path("data") / "students.json"
 
 class StudentService:
+    def __init__(self, data_file: Path = DATA_FILE):
+        self.data_file = data_file
     def load_students(self):
         if not DATA_FILE.exists():
             with DATA_FILE.open("w", encoding="utf-8") as file:
