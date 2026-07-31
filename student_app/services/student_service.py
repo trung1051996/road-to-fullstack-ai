@@ -51,7 +51,7 @@ class StudentService:
             student.name = new_name
             self.save_students(students)
             print('🚀 update successfully :',)
-            return students
+            return student
         else:
             return None
 
@@ -69,7 +69,7 @@ class StudentService:
                 if student.name != name
             ]
             self.save_students(students)
-            return students
+            return student
         else:
             return None
 

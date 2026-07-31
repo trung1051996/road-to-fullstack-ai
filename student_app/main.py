@@ -31,14 +31,14 @@ def create_student(student: StudentCreate): #dict/JSON need deserialize to objec
         raise HTTPException(status_code=409, detail=str(e))
     return student_obj
 
-@app.put("/student/{name}")
+@app.put("/student/{old_name}")
 def update_student(old_name: str, new_name: str):
     students = StudentService().update_student(old_name, new_name)
     if students is None:
         raise HTTPException(status_code = 404, detail="Student not found")
     return students
 
-@app.delete("/student/{name}")
+@app.delete("/students/{name}")
 def delete_student(name: str):
     students = StudentService().remove_student(name)
     if students is None:
