@@ -25,8 +25,11 @@ def get_students():
 @app.post("/students")
 def create_student(student: StudentCreate): #dict/JSON need deserialize to object
     student_obj = Student(**student.model_dump()) # deserialize to object
-    new_students = StudentService().add_student(student_obj)
-    return new_students
+    try:
+        StudentService().add_student(student_obj)
+    except ValueError as e:
+        raise HTTPException(status_code=409, detail=str(e))
+    return student_obj
 
 @app.put("/student/{name}")
 def update_student(old_name: str, new_name: str):
