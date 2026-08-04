@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 from services.student_service import StudentService
 from models.student import Student
+from services.gemini_service import GeminiService
 app = FastAPI()
 
 class StudentCreate(BaseModel):
@@ -14,6 +15,8 @@ class AskRequest(BaseModel):
 
 def get_student_services():
     return StudentService()
+def get_gemini_service():
+    return GeminiService()
 @app.get("/")
 def say_hello():
     return {"message": "Hello FastAPI"}
@@ -52,10 +55,12 @@ def delete_student(name: str, service: StudentService = Depends(get_student_serv
     return students
 
 @app.post("/students/ask")
-def ask_ai(question: str, service: StudentService = Depends(get_student_services)): #dict/JSON need deserialize to object
-    print("🚀 ~ main.py:55 ~ ask_ai ~ question:", question)
+def ask_ai(request: AskRequest,student_service: StudentService = Depends(get_student_services), gemini_service: GeminiService = Depends(get_gemini_service),):
+    print("🚀 ~ main.py:55 ~ ask_ai ~ question:", request)
+    students = student_service.load_students()
+    # answer = gemini_service.ask(context=format_students(students), question=request.question)
     try:
-        response = service.ask_ai(question)
+        response = gemini_service.ask_ai(request, students)
     except ValueError as e:
-        raise HTTPException(status_code=409, detail=str(e))
-    return response
+        raise HTTPException(status_code=500, detail=str(e))
+    return {"anwser":response}

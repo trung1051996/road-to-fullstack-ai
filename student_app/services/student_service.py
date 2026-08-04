@@ -2,14 +2,12 @@ from pathlib import Path
 import json
 from models.student import Student
 from dataclasses import asdict
-from app.llm import GeminiClient
  
 DATA_FILE = Path("data") / "students.json"
 
 class StudentService:
     def __init__(self, data_file: Path = DATA_FILE):
         self.data_file = data_file
-        self.service = GeminiClient()
     def load_students(self):
         # make sure the exist data
         self.data_file.parent.mkdir(
@@ -41,11 +39,11 @@ class StudentService:
             )
     def add_student(self, student):
         students = self.load_students()
-        student = next(
+        existing  = next(
             (s for s in students if s.name == student.name),
             None
         )
-        if student:
+        if existing:
             raise ValueError("Student already exists")
         students.append(student)
         self.save_students(students)
@@ -84,14 +82,3 @@ class StudentService:
             (student for student in students if student.name == name),
             None
         )
-    def ask_ai(self, question):
-        students = self.load_students()
-        prompt = f"Below is list students: \n {"\n".join([
-            f"Name: {student.name}, Age: {student.age}, Score: {student.score}"
-            for student in students
-        ])}.\nQuestion: {question}"
-        response = self.service.chat(prompt)
-        if not response: 
-            raise ValueError("Something error")
-        else:
-            return response.text

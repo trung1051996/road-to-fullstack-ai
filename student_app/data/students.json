@@ -18,5 +18,10 @@
         "name": "Blue",
         "age": 5,
         "score": 3
+    },
+    {
+        "name": "snv",
+        "age": 20,
+        "score": 6.0
     }
 ]
