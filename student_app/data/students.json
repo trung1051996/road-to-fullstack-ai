@@ -1,32 +1,22 @@
 [
     {
-        "name": "Nam",
-        "age": 15,
-        "score": 5
-    },
-    {
-        "name": "Hung",
-        "age": 20,
-        "score": 10
+        "name": "Dawson",
+        "age": 0,
+        "score": 0.0
     },
     {
         "name": "Evan",
-        "age": 20,
-        "score": 8
+        "age": 0,
+        "score": 1
     },
     {
-        "name": "Yenzz 1",
-        "age": 20,
-        "score": 8
+        "name": "Andrey",
+        "age": 10,
+        "score": 2
     },
     {
-        "name": "Laurent",
-        "age": 25,
-        "score": 10.0
-    },
-    {
-        "name": "Laurent",
-        "age": 25,
-        "score": 10.0
+        "name": "Blue",
+        "age": 5,
+        "score": 3
     }
 ]

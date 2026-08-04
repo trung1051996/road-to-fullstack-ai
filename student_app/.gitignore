@@ -1,3 +1,42 @@
-# Ignore Python cache folders
-**/__pycache__/
+# Byte-compiled / cache
+__pycache__/
 *.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Test & coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checker
+.mypy_cache/
+
+# Linter
+.ruff_cache/
+
+# Packaging
+build/
+dist/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
