@@ -28,7 +28,6 @@ def get_student(name: str, age: int):
 
 @app.get("/students")
 def get_students(service: StudentService = Depends(get_student_services)):
-    print("🚀 ~ main.py:27 ~ get_students ~ get_students:")
     return service.load_students()
 
 @app.post("/students")
@@ -54,13 +53,18 @@ def delete_student(name: str, service: StudentService = Depends(get_student_serv
         raise HTTPException(status_code = 404, detail="Student not found")
     return students
 
+def format_students(students):
+    return "\n".join(
+        f"Name: {s.name}, Age: {s.age}, Score: {s.score}" for s in students
+    )
+
+
 @app.post("/students/ask")
 def ask_ai(request: AskRequest,student_service: StudentService = Depends(get_student_services), gemini_service: GeminiService = Depends(get_gemini_service),):
-    print("🚀 ~ main.py:55 ~ ask_ai ~ question:", request)
     students = student_service.load_students()
-    # answer = gemini_service.ask(context=format_students(students), question=request.question)
+    context = format_students(students)
     try:
-        response = gemini_service.ask_ai(request, students)
+        response = gemini_service.ask_ai(request.question, context)
     except ValueError as e:
         raise HTTPException(status_code=500, detail=str(e))
-    return {"anwser":response}
+    return {"answer":response}

@@ -31,7 +31,7 @@ class GeminiClient:
                 top_k=self.top_k,
             ),
         )
-        return response
+        return response.text
 
 if __name__ == "__main__":
     service = GeminiClient()
