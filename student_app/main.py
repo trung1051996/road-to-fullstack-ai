@@ -60,11 +60,5 @@ def format_students(students):
 
 
 @app.post("/students/ask")
-def ask_ai(request: AskRequest,student_service: StudentService = Depends(get_student_services), gemini_service: GeminiService = Depends(get_gemini_service),):
-    students = student_service.load_students()
-    context = format_students(students)
-    try:
-        response = gemini_service.ask_ai(request.question, context)
-    except ValueError as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    return {"answer":response}
+def ask_ai(request: AskRequest, gemini_service: GeminiService = Depends(get_gemini_service)):
+    return gemini_service.ask_ai(request.question)

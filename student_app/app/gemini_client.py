@@ -1,6 +1,7 @@
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
+from typing import Type
 import os
 load_dotenv()
 
@@ -21,20 +22,26 @@ class GeminiClient:
         self.top_p = top_p
         self.top_k = top_k
 
-    def chat(self, prompt: str):
+    def chat(self, prompt: str, response_schema: Type[BaseModel] | None = None):
+        config_kwargs = {
+            "temperature": self.temperature,
+            "top_p": self.top_p,
+            "top_k": self.top_k,
+        }
+        if response_schema:
+            config_kwargs["response_mime_type"] = "application/json"
+            config_kwargs["response_schema"] = response_schema.model_json_schema()
+
         response = self.client.models.generate_content(
             model=self.model,
             contents=prompt,
-            config=types.GenerateContentConfig(
-                temperature=self.temperature,
-                top_p=self.top_p,
-                top_k=self.top_k,
-            ),
+            config=types.GenerateContentConfig(**config_kwargs),
         )
-        return response.text
+
+        return response.parsed
 
 if __name__ == "__main__":
     service = GeminiClient()
 
-    print(service.chat("Why is the sky blue?").text)
+    print(service.chat("Why is the sky blue?"))
 
