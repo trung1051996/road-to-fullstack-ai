@@ -2,6 +2,7 @@ from pathlib import Path
 import json
 from models.student import Student
 from dataclasses import asdict
+from clients.gemini_client import GeminiClient
  
 DATA_FILE = Path("data") / "students.json"
 

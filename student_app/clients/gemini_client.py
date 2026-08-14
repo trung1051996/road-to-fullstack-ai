@@ -2,6 +2,7 @@ from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 from typing import Type
+from pydantic import BaseModel
 import os
 load_dotenv()
 
@@ -39,6 +40,14 @@ class GeminiClient:
         )
 
         return response.parsed
+
+    def embed(self, text: str):
+        result = self.client.models.embed_content(
+            model="gemini-embedding-001",
+            contents=text,
+        )
+        return result.embeddings[0].values
+
 
 if __name__ == "__main__":
     service = GeminiClient()

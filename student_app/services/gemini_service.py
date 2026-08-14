@@ -1,5 +1,5 @@
 
-from app.gemini_client import GeminiClient
+from clients.gemini_client import GeminiClient
 from typing import Type
 from services.student_service import StudentService
 from services.prompt_builder import StudentPromptBuilder

@@ -3,6 +3,8 @@ from pydantic import BaseModel
 from services.student_service import StudentService
 from models.student import Student
 from services.gemini_service import GeminiService
+from services.embedding_service import EmbeddingService
+from clients.gemini_client import GeminiClient
 app = FastAPI()
 
 class StudentCreate(BaseModel):
@@ -17,6 +19,9 @@ def get_student_services():
     return StudentService()
 def get_gemini_service():
     return GeminiService()
+def get_embedded_service():
+    return EmbeddingService(StudentService(),GeminiClient())
+
 @app.get("/")
 def say_hello():
     return {"message": "Hello FastAPI"}
@@ -62,3 +67,18 @@ def format_students(students):
 @app.post("/students/ask")
 def ask_ai(request: AskRequest, gemini_service: GeminiService = Depends(get_gemini_service)):
     return gemini_service.ask_ai(request.question)
+
+embedding_service = EmbeddingService(
+    StudentService(),
+    GeminiClient()
+)
+
+
+embedding_service.embed_students()
+
+@app.get("/students/storage")
+def storage():
+    print("🚀 ~ main.py:81 ~ embedding_service:", embedding_service)
+    return embedding_service.documents
+
+print("🚀 ~ main.py:78 ~ embedding_service:", embedding_service.documents, "🚀")
