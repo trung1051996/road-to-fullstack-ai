@@ -70,7 +70,8 @@ def ask_ai(request: AskRequest, gemini_service: GeminiService = Depends(get_gemi
 
 embedding_service = EmbeddingService(
     StudentService(),
-    GeminiClient()
+    GeminiClient(),
+    GeminiService(),
 )
 
 
@@ -78,7 +79,9 @@ embedding_service.embed_students()
 
 @app.get("/students/storage")
 def storage():
-    print("🚀 ~ main.py:81 ~ embedding_service:", embedding_service)
     return embedding_service.documents
-
-print("🚀 ~ main.py:78 ~ embedding_service:", embedding_service.documents, "🚀")
+    
+@app.post("/students/ask/embed")
+def ask_embed(request: AskRequest):
+    print("🚀 ~ main.py:81 ~ embedding_service:", embedding_service)
+    return embedding_service.similarity_search(request.question)

@@ -1,6 +1,8 @@
 from clients.gemini_client import GeminiClient
 from services.student_service import StudentService
+from services.gemini_service import GeminiService
 from models.embedded_document import EmbeddedDocument
+from sklearn.metrics.pairwise import cosine_similarity
 
 def format_embedding_student(student):
     return f"""
@@ -13,11 +15,13 @@ class EmbeddingService:
     def __init__(
             self,
             student_service: StudentService,
-            client: GeminiClient
+            client: GeminiClient,
+            gemini_service: GeminiService | None = None,
         ):
         self.documents = []
         self.student_service = student_service
         self.client = client
+        self.gemini_service = gemini_service
     
     def embed_student(self, student):
         content = format_embedding_student(student)
@@ -42,6 +46,21 @@ class EmbeddingService:
             question: str,
             top_k: int = 3
         ):
+
+        question_vector = self.embed_text(question)
+        results = []
+        for document in self.documents:
+            score = cosine_similarity(
+                [question_vector],
+                [document.embedding]
+            )[0][0]
+            results.append((document, score))
+        results.sort(
+            key=lambda item: item[1],
+            reverse=True
+        )
+        result = self.gemini_service.ask_ai_embed(question, results)
+        return result
 
 # if __name__ == "__main__":
 

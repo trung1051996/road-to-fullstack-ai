@@ -22,3 +22,14 @@ class GeminiService:
             prompt,
             response_schema=StudentAnswer,
         )
+
+    def ask_ai_embed(self, question: str, students):
+        prompt = self.builder.build_embed(
+            students,
+            question,
+        )
+
+        return self.client.chat(
+            prompt,
+            response_schema=StudentAnswer,
+        )
