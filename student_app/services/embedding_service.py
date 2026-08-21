@@ -59,8 +59,7 @@ class EmbeddingService:
             key=lambda item: item[1],
             reverse=True
         )
-        result = self.gemini_service.ask_ai_embed(question, results)
-        return result
+        return results[:top_k]
 
 # if __name__ == "__main__":
 

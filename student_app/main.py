@@ -19,9 +19,6 @@ def get_student_services():
     return StudentService()
 def get_gemini_service():
     return GeminiService()
-def get_embedded_service():
-    return EmbeddingService(StudentService(),GeminiClient())
-
 @app.get("/")
 def say_hello():
     return {"message": "Hello FastAPI"}
@@ -82,6 +79,7 @@ def storage():
     return embedding_service.documents
     
 @app.post("/students/ask/embed")
-def ask_embed(request: AskRequest):
-    print("🚀 ~ main.py:81 ~ embedding_service:", embedding_service)
-    return embedding_service.similarity_search(request.question)
+def ask_embed(request: AskRequest, gemini_service: GeminiService = Depends(get_gemini_service)):
+    search_results = embedding_service.similarity_search(request.question)
+    result = gemini_service.ask_ai_embed(request.question, search_results)
+    return result
